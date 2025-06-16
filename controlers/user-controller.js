@@ -7,9 +7,8 @@ class UserController{
     try{
       const { login,passwd } = req.body
       const { accessToken,refreshToken } = token.generateToken({lg: login}) 
-      console.log(refreshToken)
       res.cookie("refreshToken", refreshToken,{ maxAge: deltatime, httpOnly: true })
-      return res.json(accessToken)
+      return res.json({accessToken,refreshToken})
     }catch(e){
       console.log(e)
     }
