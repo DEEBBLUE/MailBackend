@@ -1,16 +1,20 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const errorMid = require("./middleware/error-midleware.js")
 const router = require("./router/index.js");
 
 const app = express()
 
+const CorsConfig ={
+  origin: 'http://localhost:5173',
+  credentials: true,
+  optionsSuccessStatus: 200,
+}
+
+app.use(cors(CorsConfig));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
 app.use("/",router);
-app.use(errorMid)
 
 const start = async () => {
   try{

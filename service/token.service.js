@@ -8,7 +8,7 @@ class TokenService{
     const accessToken = jwt.sign(payload, access_key,{expiresIn: "30m"}) 
     const refreshToken = jwt.sign(payload, refresh_key,{expiresIn: "30d"}) 
     
-    console.log(refreshToken)
+    console.log(accessToken)
     
     return {
       accessToken,
@@ -20,7 +20,7 @@ class TokenService{
     return userData
   }
   validAccessToken(accessToken){
-    const userData = jwt.verify(accessToken,accessToken);
+    const userData = jwt.verify(accessToken,access_key);
     return userData
   }
 }

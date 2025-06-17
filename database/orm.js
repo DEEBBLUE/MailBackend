@@ -1,8 +1,7 @@
 const db = require("./database.js")
 
 class User{
-  constructor(id,login,password,refresh){
-    this.id = id
+  constructor(login,password,refresh){
     this.login = login
     this.password = password
     this.refresh = refresh
@@ -12,21 +11,18 @@ class User{
 class MyOrm{
   constructor(db){
     this.localDb = db
-    this.userCount = 0
   }
 
   createUser(login,password){
     if(this.localDb.read(login) === -2) {
+      let refresh = ""
       const user = new User(
-        id = this.userCount,
         login = login,
         password = password,
-        refresh = "" 
+        refresh = refresh 
       )
 
       this.localDb.add(login,user)
-
-      this.userCount += 1
 
       return true 
     }else{
