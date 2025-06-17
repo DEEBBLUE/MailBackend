@@ -15,13 +15,13 @@ class MyOrm{
     this.userCount = 0
   }
 
-  createUser(login,password,refresh){
+  createUser(login,password){
     if(this.localDb.read(login) === -2) {
       const user = new User(
         id = this.userCount,
         login = login,
         password = password,
-        refresh = refresh
+        refresh = "" 
       )
 
       this.localDb.add(login,user)
@@ -60,5 +60,16 @@ class MyOrm{
 
     this.localDb.update(login,user)
   }
+
+  fingToken(login,token){
+    let user = this.localDb.read(login)
+    
+    if(user.refresh === token){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
 }
 module.exports = new MyOrm(db)  
