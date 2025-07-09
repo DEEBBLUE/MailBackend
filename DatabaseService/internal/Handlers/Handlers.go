@@ -25,7 +25,7 @@ func(serv *DatabaseServer) CreateUser(
 	req *CreateUserReq,
 ) (*DefaultRes,error) {
 
-	if err := serv.orm.CreateUser(*ToModel(req.GetUser())); err != nil {
+	if err := serv.orm.CreateUser(*ToModelUser(req.GetUser())); err != nil {
 		return &DefaultRes{
 			Status: "Error",
 		},fmt.Errorf("Error in db,%w",err)
@@ -47,7 +47,7 @@ func(serv *DatabaseServer) RepeateUser(
 	}
 
 	return &RepeateUserRes{
-		User: ToGRPC(user),
+		User: ToGRPCUser(user),
 	},nil
 }
 
@@ -92,4 +92,30 @@ func(serv *DatabaseServer) UpdateUserName(
 	return &DefaultRes{
 		Status: "Ok",
 	},nil
+}
+func(serv *DatabaseServer) CreateMessage(
+	ctx context.Context,
+	req *CreateMessageReq,
+) (*DefaultRes,error) {
+	msg := ToModelMessage(req.GetMess())
+	if err := serv.orm.CreateMessage(msg); err != nil{
+		return &DefaultRes{
+			Status: "error",
+		},fmt.Errorf("%w",err)
+	}
+	return &DefaultRes{
+			Status: "Ok",
+	},nil
+}
+func(serv *DatabaseServer) RepeateMessage(
+	ctx context.Context,
+	req *RepeateMessageReq,
+) (*RepeateMessageRes,error) {
+	var res RepeateMessageRes
+	msg,err := serv.orm.RepeateMessage(int(req.GetId()))
+	if err != nil {
+		return &res,err
+	}
+	res.Mess = ToGRPCMessage(msg)
+	return &res,nil
 }
