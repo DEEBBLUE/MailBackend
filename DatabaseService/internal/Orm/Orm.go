@@ -1,11 +1,10 @@
 package orm
 
 import (
-	models "database/pkg/Models"
+	. "database/pkg/Models"
 	"database/sql"
 	"fmt"
 )
-
 
 type Orm struct {
 	db *sql.DB
@@ -17,7 +16,7 @@ func Init(db *sql.DB) Orm{
 	}
 }
 
-func(orm *Orm) CreateUser(user models.User) (error) {
+func(orm *Orm) CreateUser(user User) (error) {
 	_,err := orm.db.Exec("insert into users (email,password,name) values ($1,$2,$3)",user.Email,user.Password,user.Name)	
 	if err != nil{
 		return fmt.Errorf("Database error %w",err)	
@@ -25,8 +24,8 @@ func(orm *Orm) CreateUser(user models.User) (error) {
 	return nil
 }
 
-func(orm *Orm) RepeateUser(email string) (*models.User,error){
-	var user models.User
+func(orm *Orm) RepeateUser(email string) (*User,error){
+	var user User
 	err := orm.db.QueryRow("select * from users where email=$1",email).Scan(&user.Email,&user.Password,&user.Name)
 	if err != nil {
 		return nil,fmt.Errorf("Database error %w",err) 
@@ -48,4 +47,49 @@ func(orm *Orm) UpdateUser(email string,field_name string,field_value string) (er
 		return fmt.Errorf("Database error %w",err)
 	}
 	return nil
+}
+
+func(orm *Orm) CreateMessage(message *Message) (error){
+	var msg_id int
+	err := orm.db.QueryRow("insert into messages (name,message,time_dispatch,publisher) values ($1,$2,$3,$4) returning id",
+													message.Name,message.Message,message.TimeDispatch,message.Publisher_email).Scan(&msg_id)
+	if err != nil{
+		return err
+	}
+
+	for _,mail := range message.Consumers_emails{
+		_,err := orm.db.Exec("insert into message_consumers (message_id,consumer_email) values ($1,$2)",msg_id,mail)	
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func(orm *Orm) RepeateMessage(msg_id int) (*Message,error) {
+	var msg Message
+	var consumer_emails []string
+	err := orm.db.QueryRow("select * from messages where messages.id=$1",msg_id,
+												).Scan(&msg.Id,&msg.Message,&msg.TimeDispatch,&msg.Publisher_email,&msg.Name)
+	if err != nil{
+		return nil,fmt.Errorf("database error %w",err)
+	}
+	res,err := orm.db.Query("select (consumer_email) from message_consumers where message_consumers.message_id=$1",msg.Id)
+	if err != nil{
+		return nil,fmt.Errorf("database error %w",err)
+	}	
+	defer res.Close()
+
+	for res.Next(){
+		var email string
+		err := res.Scan(&email)
+		if err != nil {
+			return nil,fmt.Errorf("database error %w",err)
+		}
+		consumer_emails = append(consumer_emails, email)
+	}
+	msg.Consumers_emails = consumer_emails
+
+	return &msg,nil
 }
