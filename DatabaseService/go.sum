@@ -2,6 +2,12 @@ github.com/DEEBBLUE/MailProtos v0.0.1 h1:rEzIno9TBIIDJ+QvQosCyElCubHszPPwrQzAr/3
 github.com/DEEBBLUE/MailProtos v0.0.1/go.mod h1:lifIURIyFmjJI3LorcUgzTPk8dwvKM400O8FBDw5v4E=
 github.com/DEEBBLUE/MailProtos v0.0.2 h1:Aezz4fp1jQ3rC6LsFAVdS1dV9sXeTqbfv2vXMaCKNio=
 github.com/DEEBBLUE/MailProtos v0.0.2/go.mod h1:lifIURIyFmjJI3LorcUgzTPk8dwvKM400O8FBDw5v4E=
+github.com/DEEBBLUE/MailProtos v0.0.3 h1:nVe60BlHsI9UkN3BCXvtZGlV5ACp/1uZekbquayZ2dI=
+github.com/DEEBBLUE/MailProtos v0.0.3/go.mod h1:lifIURIyFmjJI3LorcUgzTPk8dwvKM400O8FBDw5v4E=
+github.com/DEEBBLUE/MailProtos v0.0.4 h1:gpoAvnfkarVDp6nCtcp+VGFW7SO27r+AbOxCO3cmBEw=
+github.com/DEEBBLUE/MailProtos v0.0.4/go.mod h1:lifIURIyFmjJI3LorcUgzTPk8dwvKM400O8FBDw5v4E=
+github.com/DEEBBLUE/MailProtos v0.0.5 h1:4+1uZeB+NnXbIk6ATUXpeqNLCKvgJ76mQZilLGp+Wvg=
+github.com/DEEBBLUE/MailProtos v0.0.5/go.mod h1:lifIURIyFmjJI3LorcUgzTPk8dwvKM400O8FBDw5v4E=
 github.com/lib/pq v1.10.9 h1:YXG7RB+JIjhP29X+OtkiDnYaXQwpS4JEWq7dtCCRUEw=
 github.com/lib/pq v1.10.9/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
 golang.org/x/net v0.41.0 h1:vBTly1HeNPEn3wtREYfy4GZ/NECgw2Cnl+nK6Nz3uvw=

@@ -3,7 +3,7 @@ module database
 go 1.24.4
 
 require (
-	github.com/DEEBBLUE/MailProtos v0.0.2 // indirect
+	github.com/DEEBBLUE/MailProtos v0.0.5 // indirect
 	github.com/lib/pq v1.10.9 // indirect
 	golang.org/x/net v0.41.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
