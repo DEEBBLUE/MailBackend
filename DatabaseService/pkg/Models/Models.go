@@ -68,3 +68,29 @@ func ToModelMessage(message *types.Message) *Message{
 	return CreateMessage(int(message.GetId()),message.GetName(),message.MessageValue,message.GetTimeDispatch(),
 											 message.GetPublisherEmail(),message.EmailsConsumers)	
 }
+
+type LightMessage struct{
+	Id int 
+	Name string
+	TimeDispatch string
+}
+
+func CreateLightMessage(id int,name string,time_dispatch string) *LightMessage{
+	return &LightMessage{
+		Id: id,
+		Name: name,
+		TimeDispatch: time_dispatch,
+	}
+}
+
+func ToGRPCLightMessage(msg *LightMessage) *types.LightMessage{
+	return &types.LightMessage{
+		Id: int32(msg.Id),
+		Name: msg.Name,
+		TimeDispatch: msg.TimeDispatch,
+	}
+}
+
+func ToModelLightMessage(msg *types.LightMessage) *LightMessage{
+	return CreateLightMessage(int(msg.GetId()),msg.Name,msg.GetTimeDispatch())
+}
