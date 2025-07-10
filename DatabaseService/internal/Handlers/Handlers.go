@@ -8,6 +8,7 @@ import (
 
 	dbService "github.com/DEEBBLUE/MailProtos/api/Database"
 	. "github.com/DEEBBLUE/MailProtos/api/Req"
+	types "github.com/DEEBBLUE/MailProtos/api/Types"
 	"google.golang.org/grpc"
 )
 
@@ -118,4 +119,24 @@ func(serv *DatabaseServer) RepeateMessage(
 	}
 	res.Mess = ToGRPCMessage(msg)
 	return &res,nil
+}
+
+func(serv *DatabaseServer) RepeateMessages(
+	ctx context.Context,
+	req *RepeateMessagesReq,
+) (*RepeateMessagesRes,error) {
+	var listRes []*types.LightMessage
+
+	listMsg,err := serv.orm.RepeateUserMessages(req.GetEmail())
+	if err != nil {
+		return nil,fmt.Errorf("%w",err)
+	}
+
+	for _,msg := range listMsg{
+		listRes = append(listRes, ToGRPCLightMessage(&msg))
+	}
+
+	return &RepeateMessagesRes{
+		Mssages: listRes,
+	},nil
 }
