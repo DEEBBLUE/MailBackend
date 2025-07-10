@@ -8,7 +8,7 @@ import (
 
 
 type AuthConfig struct{
-	Credential []byte `yaml:"cred"`
+	Credential string `yaml:"cred"`
 }
 
 func InitConfig(path string)(*AuthConfig,error){
