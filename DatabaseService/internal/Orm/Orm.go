@@ -93,3 +93,50 @@ func(orm *Orm) RepeateMessage(msg_id int) (*Message,error) {
 
 	return &msg,nil
 }
+
+func(orm *Orm) RepeateUserMessages(email string) ([]LightMessage,error){
+	var listMsg []LightMessage
+	var listId []int
+		
+	list,err := orm.db.Query("select (id) from messages where publisher=$1",email)
+	if err != nil{
+		return nil,fmt.Errorf("database error %w",err)
+	}
+	defer list.Close()
+
+	for list.Next(){
+		var id int
+		if err:=list.Scan(&id);err != nil{
+			return nil,fmt.Errorf("database error %w",err)
+		}
+		listId = append(listId, id)
+
+	}
+
+	listConsume,err := orm.db.Query("select (message_id) from message_consumers where consumer_email=$1",email)	
+
+	if err != nil{
+		return nil,fmt.Errorf("database error %w",err)
+	}
+	defer listConsume.Close()
+
+	for listConsume.Next(){
+		var id int
+		if err:=listConsume.Scan(&id);err != nil{
+			return nil,fmt.Errorf("database error %w",err)
+		}
+		listId = append(listId, id)
+	}
+	
+	for _,id := range listId{
+		var msg LightMessage 
+	
+		res := orm.db.QueryRow("select id,name,time_dispatch from messages where id=$1",id)
+
+		if err := res.Scan(&msg.Id,&msg.Name,&msg.TimeDispatch); err != nil{
+			return nil,fmt.Errorf("database error this is QueryRow %w",err)
+		}
+		listMsg = append(listMsg, msg)
+	}
+	return listMsg,nil
+}
